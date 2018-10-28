@@ -1,4 +1,6 @@
 
+Writing my notes about how to proceed with this application
+
 App Controller
 ==============
 app
