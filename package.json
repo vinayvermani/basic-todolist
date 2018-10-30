@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "lite-server -c bs-config",
-    "build": "browserify -t babelify -e index.js -o main.js"
+    "build": "browserify -t babelify -e index.js -o main.js",
+    "watchify": "watchify -t babelify -e index.js -o main.js" 
   },
   "keywords": [],
   "author": "",
