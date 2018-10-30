@@ -1,4 +1,5 @@
 var $ = require("jquery");
+var Rx = require("rxjs");
 
 const TodoItem = function(props) {
   var state = {
@@ -11,13 +12,16 @@ const TodoItem = function(props) {
     `<div id=${state.id}>${state.description} - ${state.done}</div>`
   );
 
+  element.click(function(event) {
+    state.done = !state.done;
+    element = `<div id=${state.id}>${state.description} - ${state.done}</div>`;
+    $("#" + state.id).replaceWith(element);
+  });
+
   var self = {
     appendTo: querySelector => element.appendTo($(querySelector))
   };
 
-  element.click(event => {
-      console.log(event.target.id);
-  });
   return self;
 };
 
