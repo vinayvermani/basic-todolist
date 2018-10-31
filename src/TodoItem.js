@@ -1,27 +1,46 @@
-var $ = require("jquery");
-var Rx = require("rxjs");
+const $ = require("jquery");
+const Rx = require("rxjs");
+const R = require("ramda");
+
+//create element
+//create handler
 
 const TodoItem = function(props) {
   var state = {
     id: props.id,
     description: props.description,
     done: props.done,
-    deleted: false
+    parent: ""
   };
-  var element = $(
-    `<div id=${state.id}>${state.description} - ${state.done}</div>`
-  );
+  var $element;
+  const createElement = state => {
+    $element = $(
+      `<div id=${state.id}><div class=item-desc>${
+        state.description
+      }</div><div class=item-done>${state.done}</div></div>`
+    );
+    var doneSubscription = Rx.fromEvent(
+      $(".item-done", $element)[0],
+      "click"
+    ).subscribe(event => {
+      state.done = !state.done;
+      doneSubscription.unsubscribe();
+      $element.replaceWith(createElement(state));
+      onDoneToggle.next(state);
+    });
+    return $element;
+  };
 
-  element.click(function(event) {
-    state.done = !state.done;
-    element = `<div id=${state.id}>${state.description} - ${state.done}</div>`;
-    $("#" + state.id).replaceWith(element);
-  });
+  const appendTo = querySelector => {
+    state.parent = querySelector;
+    createElement(state).appendTo($(querySelector));
+  };
+  const onDoneToggle = new Rx.Subject();
 
   var self = {
-    appendTo: querySelector => element.appendTo($(querySelector))
+    appendTo,
+    onDoneToggle
   };
-
   return self;
 };
 
