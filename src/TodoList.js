@@ -1,5 +1,6 @@
 const $ = require("jquery");
 const Rx = require("rxjs");
+const { filter } = require("rxjs/operators");
 const TodoItem = require("./TodoItem");
 
 const TodoList = function(props) {
@@ -25,8 +26,10 @@ const TodoList = function(props) {
       state.$items.push($item);
     });
     var x = Rx.fromEvent($("#todo-input", $element)[0], "keyup")
-      .subscribe(event => {
-        if(event.keyCode===13) { addClickSubject.next($("#todo-input").val()); }
+      .pipe(filter(event => event.keyCode === 13))
+      .subscribe(function(event) {
+        addClickSubject.next($("#todo-input").val());
+        $("#todo-input").val("");
       });
     return $element;
   };

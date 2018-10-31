@@ -8,13 +8,13 @@ var data = [
 
 var list = TodoList(data);
 list.appendTo(".to-do-app");
-console.log("hi")
-list.addClickSubject.subscribe(text=>{
+console.log("hi");
+list.addClickSubject.subscribe(text => {
   list.addItem({
     id: "x",
     description: text,
     done: false
-  })
+  });
 });
 
 //comments
@@ -24,13 +24,10 @@ list.addClickSubject.subscribe(text=>{
 //   i.appendTo(".to-do-app")
 // });
 
-
 // items[0].onDoneToggle.subscribe(function(event){
 //   console.log(event);
 // })
 
-
 // items[1].onDoneToggle.subscribe(function(event){
 //   console.log(event);
 // })
-
