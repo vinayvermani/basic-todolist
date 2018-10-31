@@ -1,11 +1,22 @@
 //var TodoItem = require("./src/TodoItem");
+
 var TodoList = require("./src/TodoList");
 var data = [
   { id: "a", description: "go to gym", done: true },
   { id: "b", description: "learn coding", done: false }
 ];
 
-TodoList(data).appendTo(".to-do-app");
+var list = TodoList(data);
+list.appendTo(".to-do-app");
+console.log("hi")
+list.addClickSubject.subscribe(text=>{
+  list.addItem({
+    id: "x",
+    description: text,
+    done: false
+  })
+});
+
 //comments
 // var items = data.map(item=>TodoItem(item));
 

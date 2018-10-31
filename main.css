@@ -1,3 +1,10 @@
-h1 {
-    color: lightseagreen;
+body {
+  display: flex  
 }
+
+div.to-do-list {
+    width: 200px;
+    background: #777;
+    align-self: center;
+}
+

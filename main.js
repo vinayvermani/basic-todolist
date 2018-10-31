@@ -13,7 +13,16 @@ var data = [{
   description: "learn coding",
   done: false
 }];
-TodoList(data).appendTo(".to-do-app"); //comments
+var list = TodoList(data);
+list.appendTo(".to-do-app");
+console.log("hi");
+list.addClickSubject.subscribe(function (text) {
+  list.addItem({
+    id: "x",
+    description: text,
+    done: false
+  });
+}); //comments
 // var items = data.map(item=>TodoItem(item));
 // items.forEach(i=>{
 //   i.appendTo(".to-do-app")
@@ -26582,25 +26591,44 @@ var TodoItem = require("./TodoItem");
 var TodoList = function TodoList(props) {
   var state = {
     items: props,
+    $items: [],
     parent: ""
   };
   var $element;
+  var addClickSubject = new Rx.Subject();
 
   var createElement = function createElement(state) {
-    $element = $("<div class=todo-list></div>");
+    $element = $("<div class=todo-list>" + "<div class=item-control>" + "<input type=text id=todo-input>" + "</div>" + "</div");
     state.items.forEach(function (item) {
-      TodoItem(item).appendTo($element);
+      var $item = TodoItem(item);
+      $item.appendTo($element);
+      state.$items.push($item);
+    });
+    var x = Rx.fromEvent($("#todo-input", $element)[0], "keyup").subscribe(function (event) {
+      if (event.keyCode === 13) {
+        addClickSubject.next($("#todo-input").val());
+      }
     });
     return $element;
   };
 
   var appendTo = function appendTo(querySelector) {
     state.parent = querySelector;
+    console.log(querySelector);
     createElement(state).appendTo($(querySelector));
   };
 
+  var addItem = function addItem(item) {
+    var $item = TodoItem(item);
+    $item.appendTo($element);
+    state.items.push(item);
+    state.$items.push($item);
+  };
+
   var self = {
-    appendTo: appendTo
+    appendTo: appendTo,
+    addItem: addItem,
+    addClickSubject: addClickSubject
   };
   return self;
 };
