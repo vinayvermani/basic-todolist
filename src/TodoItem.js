@@ -2,8 +2,20 @@ const $ = require("jquery");
 const Rx = require("rxjs");
 const R = require("ramda");
 
-//create element
-//create handler
+const createTemplate = R.curry(
+  state =>
+    `<div id=${state.id}><div class=item-desc>${
+      state.description
+    }</div><div class=item-done>${state.done}</div></div>`
+);
+
+const create$element = R.pipe(createTemplate, $);
+
+const createFromEventObservable = R.curry(function($,event,querySelector,$element){
+  return Rx.fromEvent($(querySelector,$element)[0],event)
+});
+
+
 
 const TodoItem = function(props) {
   var state = {
